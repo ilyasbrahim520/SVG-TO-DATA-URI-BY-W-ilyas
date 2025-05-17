@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ilyasbrahim520.github.io/SVG-TO-DATA-URI-BY-W-ilyas/sitemap.xml
