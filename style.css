@@ -333,6 +333,7 @@ body.dark-theme .preview-container {
 }
 body.dark-theme footer {
   border-top-color: #3c5473;
+  margin-top: 10px;
   color: #adb5bd;
 }
 
