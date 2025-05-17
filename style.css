@@ -223,7 +223,7 @@
       text-align: left;
       font-size: 0.9rem;
       border-left: 4px solid var(--primary-color);
-      max-width: 300px;
+      max-height: 300px;
     }
     
     .copy-btn {
