@@ -34,6 +34,7 @@ header {
   text-align: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
@@ -360,7 +361,7 @@ body.dark-theme footer {
 }
 .story-section pre,
 .tutorial pre {
-  background: #f4f4f4;
+  background: #e8e8e8;
   padding: 14px 18px;
   border-radius: 8px;
   overflow-x: auto;
