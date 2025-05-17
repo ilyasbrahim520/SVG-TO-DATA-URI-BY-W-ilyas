@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #2980b9;
+  --primary-color: #3A79E1;
+  --secondary-color: #36485A;
   --accent-color: #2ECC48;
   --light-bg: #EAF2FA;
   --dark-bg: #030408;
@@ -35,7 +35,7 @@ header {
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   border-radius: 0 0 5px 5px;
@@ -90,6 +90,7 @@ h2::after {
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   flex: 1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .input-panel:hover, .preview-panel:hover, .output-panel:hover {
   transform: translateY(-5px);
@@ -117,14 +118,14 @@ h2::after {
   cursor: pointer;
   transition: all 0.3s;
   font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
     
 .file-label:hover {
   background-color: var(--secondary-color);
   transform: translateY(-2px);
   box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-}
+    }
 .file-input {
   position: absolute;
   right: 0;
@@ -171,6 +172,7 @@ button {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 button:hover {
   background-color: #27ae60;
@@ -184,12 +186,14 @@ button:hover {
 }
 .copy-btn {
   background-color: var(--secondary-color);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .copy-btn:hover {
   background-color: #1c6294;
 }
 .download-btn {
   background-color: var(--primary-color);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .download-btn:hover {
   background-color: #2980b9;
@@ -215,7 +219,7 @@ button:hover {
   max-height: 300px;
 }
 .output-code {
-  background-color: #f7f9fc;
+  background-color: #EDEFF2;
   padding: 20px;
   border-radius: 8px;
   overflow-x: auto;
@@ -224,7 +228,7 @@ button:hover {
   white-space: pre-wrap;
   word-break: break-all;
   direction: ltr;
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid #36485A;
   font-size: 0.9rem;
 }
 
@@ -325,15 +329,22 @@ body.dark-theme .output-panel {
 }
 body.dark-theme header {
   background: rgba(16, 38, 82, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 body.dark-theme h2 {
   color: #e9ecef;
   border-bottom-color: #3c5473;
 }
+body.dark-theme .file-label {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 body.dark-theme textarea {
   background-color: #222831;
   color: #f8f9fa;
   border-color: #3c5473;
+}
+body.dark-theme button{
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 body.dark-theme .output-code,
 body.dark-theme .preview-container {
@@ -341,10 +352,14 @@ body.dark-theme .preview-container {
   color: #f8f9fa;
   border-color: #3c5473;
 }
+body.dark-theme .copy-btn,
+body.dark-theme .download-btn {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 body.dark-theme footer {
-  border-top-color: #3c5473;
   margin-top: 10px;
   color: #adb5bd;
+  border: none;
 }
 
 /* ========== Story & Tutorial Sections ========== */
@@ -356,10 +371,12 @@ body.dark-theme footer {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   color: var(--text-color);
+  border: 2px solid;
+  border-color: #3D444E;
 }
 .story-section h2,
 .tutorial h2 {
-  color: var(--heading-color);
+  color: #36485A;
   margin-bottom: 20px;
 }
 .story-section h3,
