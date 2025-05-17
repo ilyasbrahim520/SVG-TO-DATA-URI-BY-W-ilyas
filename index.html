@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG TO Data URI</title>
+  <meta name="description" content="Free online tool to convert SVG code into Data URI format, optimized for CSS and HTML usage. Fast, clean and offline-ready.">
+  <meta name="keywords" content="SVG to Data URI, SVG Converter by W-ilyas, SVG converter, SVG base64, online svg tool, svg encoder, data URI, svg encoder online, svg in CSS">
+  <meta name="author" content="Ilyas">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://ilyas.github.io/svg-uri-tool/">
+
+  <!-- Open Graph for preview in social platforms -->
+  <meta property="og:title" content="SVG to Data URI Converter">
+  <meta property="og:description" content="Convert your SVG code into a compact Data URI format instantly.">
+  <meta property="og:image" content="preview.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ilyas.github.io/svg-uri-tool/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SVG to Data URI Converter">
+  <meta name="twitter:description" content="Convert your SVG code into a Data URI format in one click.">
+  <meta name="twitter:image" content="preview.png">
+
+  <!-- Favicon -->
+<!-- Favicon 180px for Apple -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
+
+<!-- Favicon 512px for Android / PWA -->
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>SVG to Data URI</h1>
+      <div class="theme-switch">
+        <label for="theme-toggle">Dark Mode</label>
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="main-content">
+      <div class="input-panel">
+        <h2>Enter SVG Code</h2>
+        <div class="file-upload">
+          <div class="file-input-wrapper">
+            <label class="file-label" for="svg-file">Choose SVG File</label>
+            <input type="file" id="svg-file" class="file-input" accept=".svg">
+          </div>
+          <div class="file-name" id="file-name-display">-No file chosen-</div>
+        </div>
+        <div>
+          <label for="svg-input">Or paste SVG code here</label>
+          <textarea id="svg-input" placeholder="<!-- Enter SVG code here --><svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z'/></svg>"></textarea>
+        </div>
+        <div class="buttons">
+          <button id="convert-btn">Convert to Data URI</button>
+          <button id="clear-btn">Clear</button>
+        </div>
+      </div>
+      
+      <div class="preview-panel">
+        <h2>Preview</h2>
+        <div class="preview-container" id="svg-preview">
+          <p>Preview will appear here</p>
+        </div>
+      </div>
+      
+      <div class="output-panel">
+        <h2>Data URI Output</h2>
+        <div class="output-code" id="output-code">Output will appear here after conversion</div>
+        <div class="buttons">
+          <button id="copy-btn" class="copy-btn">Copy Data URI</button>
+          <button id="download-btn" class="download-btn">Download as TXT</button>
+        </div>
+      </div>
+    </div>
+    <div id="notification" class="notification"></div>
+  </div>
+  
+  <footer class="container">
+    <p>SVG to Data URI Converter - Built for easy SVG text file storage - <strong>Powered by W-Ilyas</strong></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
