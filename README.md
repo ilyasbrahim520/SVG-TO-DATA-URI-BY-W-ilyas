@@ -13,7 +13,7 @@ A simple yet powerful tool to convert SVG code to Data URI format for easy use i
 
 ## How to Use
 
-1. Visit [https://yourusername.github.io/svg-to-data-uri-converter/](https://yourusername.github.io/svg-to-data-uri-converter/)
+1. Visit [https://ilyasbrahim520.github.io/SVG-TO-DATA-URI-BY-W-ilyas/](https://ilyasbrahim520.github.io/SVG-TO-DATA-URI-BY-W-ilyas/)
 2. Upload an SVG file or paste SVG code
 3. Click "Convert to Data URI"
 4. Copy the generated Data URI or download it as a text file
