@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SVG to Data URI Converter">
   <meta name="twitter:description" content="Convert your SVG code into a Data URI format in one click.">
-  <meta name="twitter:image" content="https://ilyasbrahim520.github.io/SVG-TO-DATA-URI-BY-W-ilyas/preview-img.jpg">
+  <meta name="twitter:image" content="https://ilyasbrahim520.github.io/SVG-TO-DATA-URI-BY-W-ilyas/preview.png">
 
   <!-- Favicon (keep your current) -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
@@ -87,9 +87,115 @@
     <div id="notification" class="notification"></div>
   </div>
   
+
+<section class="story-section container">
+  <h2>Why This Tool Exists (The Real Problem with SVG)</h2>
+  
+  <p>
+    When building websites or local apps, you may notice that some SVG images don’t display correctly —
+    especially when using a local server like in Koder, JSBox, or other development environments.
+  </p>
+
+  <p>
+    This happens because <strong>SVG files are treated as XML</strong>, not standard image formats like PNG or JPG.
+    So using:
+  </p>
+
+  <pre><code>&lt;img src="icon.svg"&gt;</code></pre>
+
+  <p>
+    ...can fail, even though the file is right there in your project!
+  </p>
+
+  <h3>So what are the workarounds?</h3>
+
+  <h4>1. Inline SVG:</h4>
+  <ul>
+    <li>Makes your HTML <strong>long and hard to read</strong>.</li>
+    <li>Cannot be reused easily across different pages.</li>
+    <li>Not flexible for non-developers or CMS use.</li>
+  </ul>
+
+  <h4>2. External links?</h4>
+  <ul>
+    <li>Requires <strong>internet connection</strong>.</li>
+    <li>Depends on an external server that may break.</li>
+  </ul>
+
+  <h3>The Smarter Solution: Text-Based Data URI</h3>
+  <p>
+    So instead of using <code>example.svg</code>, we convert it into a <strong>Data URI</strong> — a single line of text that can be:
+  </p>
+  <ul>
+    <li>Loaded with JavaScript from <code>.txt</code> file (e.g. <code>icon.txt</code>).</li>
+    <li>Inserted into <code>&lt;img src="..."&gt;</code> like any normal image.</li>
+    <li>Saved, copied, reused — no dependencies, no broken links.</li>
+  </ul>
+
+  <p>
+    You now have the <strong>freedom of external files</strong>, and the <strong>reliability of inline SVG</strong>, without the mess.
+  </p>
+
+  <blockquote>
+    This is the reason this tool was created.
+  </blockquote>
+</section>
+
+<section class="tutorial">
+  <h2>How to Use This Tool</h2>
+
+  <p>
+    After converting your SVG code into a Data URI using this tool, you will get a result that looks like this:
+  </p>
+  <pre><code>svg+xml;utf8,%3Csvg%20...%3E...</code></pre>
+
+  <p>
+    Now, save that result into a <code>.txt</code> file. For example, you can create a file called <code>icon.txt</code> and paste the Data URI inside it.
+  </p>
+
+  <p>To display your SVG in an <code>&lt;img&gt;</code> tag, use this format:</p>
+  <pre><code>&lt;img class="svg-img custom-icon" data-src="icon.txt"&gt;</code></pre>
+
+  <p>
+    Then add this JavaScript snippet to your page to load the external SVG correctly:
+  </p>
+  <pre><code>&lt;script&gt;
+document.querySelectorAll('.svg-img').forEach(img =&gt; {
+  fetch(img.dataset.src)
+    .then(response =&gt; response.text())
+    .then(dataUri =&gt; {
+      img.src = dataUri.trim();
+    })
+    .catch(error =&gt; {
+      console.error("Failed to load SVG:", error);
+    });
+});
+&lt;/script&gt;
+</code></pre>
+
+  <p>
+    To apply custom styles to each SVG image, simply add a unique class to your <code>&lt;img&gt;</code> tag and define its styles in your CSS:
+  </p>
+  <pre><code>&lt;img class="svg-img my-icon" data-src="icon.txt"&gt;</code></pre>
+  <pre><code>/* CSS */
+.my-icon {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 0 4px #444);
+}</code></pre>
+
+  <p>
+    This keeps your HTML clean and avoids inline SVG clutter. Plus, you stay offline — no external URLs needed.
+  </p>
+</section>
+
   <footer class="container">
     <p>SVG to Data URI Converter - Built for easy SVG text file storage - <strong>Powered by W-Ilyas</strong></p>
   </footer>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js">
+ </script>
+ <script>eruda.init();</script>
 
   <script src="script.js"></script>
 </body>
