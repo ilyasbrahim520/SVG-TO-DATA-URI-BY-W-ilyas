@@ -55,9 +55,10 @@ h2 {
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 20px;
-  border-bottom: 2px solid var(--light-bg);
+  border-bottom: 2px solid rgba(60, 84, 115, 0.3);
   padding-bottom: 12px;
   position: relative;
+  text-shadow: 0 0 2px rgba(54, 72, 90, 0.4);
 }
 h2::after {
   content: '';
@@ -90,7 +91,7 @@ h2::after {
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   flex: 1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.15);
 }
 .input-panel:hover, .preview-panel:hover, .output-panel:hover {
   transform: translateY(-5px);
@@ -125,7 +126,7 @@ h2::after {
   background-color: var(--secondary-color);
   transform: translateY(-2px);
   box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    }
+}
 .file-input {
   position: absolute;
   right: 0;
@@ -146,6 +147,7 @@ textarea {
   border-radius: 6px;
   padding: 12px;
   font-family: 'Fira Code', 'Courier New', monospace;
+  color: green;
   resize: vertical;
   margin-bottom: 15px;
   direction: ltr;
@@ -230,6 +232,7 @@ button:hover {
   direction: ltr;
   border-left: 4px solid #36485A;
   font-size: 0.9rem;
+  max-height: 300px;
 }
 
 /* ========== Notification ========== */
@@ -334,13 +337,14 @@ body.dark-theme header {
 body.dark-theme h2 {
   color: #e9ecef;
   border-bottom-color: #3c5473;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.4);
 }
 body.dark-theme .file-label {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 body.dark-theme textarea {
   background-color: #222831;
-  color: #f8f9fa;
+  color: green;
   border-color: #3c5473;
 }
 body.dark-theme button{
@@ -372,7 +376,7 @@ body.dark-theme footer {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   color: var(--text-color);
   border: 2px solid;
-  border-color: #3D444E;
+  border-color: rgba(61, 68, 78, 0.3);
 }
 .story-section h2,
 .tutorial h2 {
