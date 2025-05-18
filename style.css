@@ -81,6 +81,9 @@ h2::after {
   .main-content {
     flex-direction: row;
   }
+  h1 {
+    font-size: 3rem;
+  }
 }
 
 /* ========== Panels ========== */
