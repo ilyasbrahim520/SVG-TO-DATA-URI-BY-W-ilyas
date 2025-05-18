@@ -30,6 +30,7 @@ body {
 header {
   background: rgba(52, 152, 219, 0.4);
   color: white;
+  height: max-content;
   padding: 2px 0;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -47,6 +48,7 @@ h1 {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.5px;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
 }
 
 h2 {
@@ -77,15 +79,6 @@ h2::after {
   gap: 25px;
   margin-top: 40px;
 }
-@media (min-width: 768px) {
-  .main-content {
-    flex-direction: row;
-  }
-  h1 {
-    font-size: 3rem;
-  }
-}
-
 /* ========== Panels ========== */
 .input-panel, .preview-panel, .output-panel {
   background: white;
@@ -283,8 +276,9 @@ footer {
 }
 .theme-switch label {
   margin-right: 10px;
-  color: white;
-  font-size: 0.9rem;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
+  text-shadow: 0 0px 3px rgba(255, 255, 255, 0.5);
 }
 .switch {
   position: relative;
@@ -322,7 +316,6 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(20px);
 }
-
 /* ========== Dark Theme ========== */
 body.dark-theme {
   background-color: var(--dark-bg);
@@ -447,4 +440,28 @@ body.dark-theme .story-section blockquote {
   background-color: #2a2a2a;
   border-left-color: #3498db;
   color: #ccc;
+}
+@media (min-width: 768px) {
+  .main-content {
+    flex-direction: row;
+  }
+  h1 {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  .theme-switch label {
+    font-size: 1.3rem ;
+    font-weight: bold;
+  }
+  p {
+    font-size: 1.3rem;
+  }
+  li {
+    font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1.2rem;
+  }
 }
