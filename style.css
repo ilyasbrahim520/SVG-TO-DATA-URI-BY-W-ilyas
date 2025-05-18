@@ -28,7 +28,7 @@ body {
 }
 
 header {
-  background: rgba(52, 152, 219, 0.4);
+  background: rgba(52, 152, 219, 0.5);
   color: white;
   height: max-content;
   padding: 2px 0;
@@ -70,13 +70,15 @@ h2::after {
   background-color: var(--accent-color);
   bottom: -2px;
   left: 0;
+  box-shadow: 0 0 4px rgba(46, 204, 72, 0.4);
 }
 
 /* ========== Main Content Layout ========== */
 .main-content {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 25px !important;
+  -webkit-gap: 25px !important;
   margin-top: 40px;
 }
 /* ========== Panels ========== */
@@ -87,7 +89,7 @@ h2::after {
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   flex: 1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .input-panel:hover, .preview-panel:hover, .output-panel:hover {
   transform: translateY(-5px);
@@ -259,12 +261,12 @@ button:hover {
 
 /* ========== Footer ========== */
 footer {
-  margin-top: 60px;
+  margin-top: 4px !important;
   text-align: center;
   color: #666;
-  padding: 20px 0;
+  padding: 5px 50px 15px 50px !important;
   border-top: 1px solid #eee;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 
 /* ========== Theme Switch ========== */
@@ -298,6 +300,7 @@ footer {
   background-color: rgba(255,255,255,0.3);
   transition: .4s;
   border-radius: 34px;
+  box-shadow: 0 0 2px rgba(189, 222, 243, 0.6);
 }
 .slider:before {
   position: absolute;
@@ -325,10 +328,11 @@ body.dark-theme .input-panel,
 body.dark-theme .preview-panel,
 body.dark-theme .output-panel {
   background-image: linear-gradient( #102653, #0B1223);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px 1px rgba(16, 38, 83, 0.8);
 }
 body.dark-theme header {
-  background: rgba(16, 38, 82, 0.6);
+  background: rgba(16, 38, 82, 0.7);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 body.dark-theme h2 {
@@ -358,9 +362,13 @@ body.dark-theme .download-btn {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 body.dark-theme footer {
-  margin-top: 10px;
+  margin-top: 4px;
   color: #adb5bd;
   border: none;
+  padding: 5px 50px 15px 50px;
+}
+body.dark-theme .slider {
+  box-shadow: 0 0 2px rgba(46, 204, 72, 0.6);
 }
 
 /* ========== Story & Tutorial Sections ========== */
