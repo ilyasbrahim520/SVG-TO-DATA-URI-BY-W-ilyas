@@ -455,6 +455,11 @@ body.dark-theme .story-section blockquote {
     font-size: 1.3rem ;
     font-weight: bold;
   }
+  .input-panel-text {
+    font-size: 1rem;
+    margin-left: 3px;
+    font-weight: bold;
+  }
   p {
     font-size: 1.3rem;
   }
