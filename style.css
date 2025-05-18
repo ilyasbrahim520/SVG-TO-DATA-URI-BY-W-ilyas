@@ -115,6 +115,7 @@ h2::after {
   background-color: var(--primary-color);
   color: white;
   padding: 12px 20px;
+  margin-top: 5px;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s;
