@@ -79,7 +79,7 @@ h2::after {
   flex-direction: column;
   gap: 25px !important;
   -webkit-gap: 25px !important;
-  margin-top: 40px;
+  margin: 40px 6px auto 6px;
 }
 /* ========== Panels ========== */
 .input-panel, .preview-panel, .output-panel {
