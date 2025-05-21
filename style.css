@@ -39,7 +39,7 @@ header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 10px 10px;
   z-index: 100;
 }
 
@@ -88,12 +88,12 @@ h2::after {
   padding: 25px;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
   flex: 1;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .input-panel:hover, .preview-panel:hover, .output-panel:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 20px -5px rgba(0,0,0,0.15);
+  box-shadow: 0 solid 15px 20px -5px rgba(0,0,0,0.15);
 }
 
 /* ========== File Upload & Textarea ========== */
