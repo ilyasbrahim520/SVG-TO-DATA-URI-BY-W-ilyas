@@ -93,7 +93,7 @@ h2::after {
 }
 .input-panel:hover, .preview-panel:hover, .output-panel:hover {
   transform: translateY(-5px);
-  box-shadow: 0 solid 15px 20px -5px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 20px -5px rgba(0,0,0,0.15);
 }
 
 /* ========== File Upload & Textarea ========== */
