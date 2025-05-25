@@ -101,7 +101,7 @@
     So using:
   </p>
 
-  <pre><code>&lt;img src="icon.svg"&gt;</code></pre>
+  <pre><code style="color: #00D200;">&lt;img src="icon.svg"&gt;</code></pre>
 
   <p>
     ...can fail, even though the file is right there in your project!
@@ -128,7 +128,7 @@
   </p>
   <ul>
     <li>Loaded with JavaScript from <code>.txt</code> file (e.g. <code>icon.txt</code>).</li>
-    <li>Inserted into <code>&lt;img src="..."&gt;</code> like any normal image.</li>
+    <li>Inserted into <code style="color: #00D200;">&lt;img src="..."&gt;</code> like any normal image.</li>
     <li>Saved, copied, reused — no dependencies, no broken links.</li>
   </ul>
 
@@ -153,13 +153,13 @@
     Now, save that result into a <code>.txt</code> file. For example, you can create a file called <code>icon.txt</code> and paste the Data URI inside it.
   </p>
 
-  <p>To display your SVG in an <code>&lt;img&gt;</code> tag, use this format:</p>
-  <pre><code>&lt;img class="svg-img" data-src="icon.txt"&gt;</code></pre>
+  <p>To display your SVG in an <code style="color: #00D200;">&lt;img&gt;</code> tag, use this format:</p>
+  <pre><code style="color: #00D200;">&lt;img class="svg-img" data-src="icon.txt"&gt;</code></pre>
 
   <p>
     Then add this JavaScript snippet to your page to load the external SVG correctly:
   </p>
-  <pre><code>&lt;script&gt;
+  <pre><code style="color: #EE2670;">&lt;script&gt;
 document.querySelectorAll('.svg-img').forEach(img =&gt; {
   fetch(img.dataset.src)
     .then(response =&gt; response.text())
@@ -174,10 +174,10 @@ document.querySelectorAll('.svg-img').forEach(img =&gt; {
 </code></pre>
 
   <p>
-    To apply custom styles to each SVG image, simply add a unique class to your <code>&lt;img&gt;</code> tag and define its styles in your CSS:
+    To apply custom styles to each SVG image, simply add a unique class to your <code style="color: #00D200;">&lt;img&gt;</code> tag and define its styles in your CSS:
   </p>
-  <pre><code>&lt;img class="svg-img my-icon" data-src="icon.txt"&gt;</code></pre>
-  <pre><code>/* CSS */
+  <pre><code style="color: #00D200;">&lt;img class="svg-img my-icon" data-src="icon.txt"&gt;</code></pre>
+  <pre><code style="color: #0098FD;">/* CSS */
 .my-icon {
   width: 40px;
   height: 40px;
