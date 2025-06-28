@@ -379,3 +379,13 @@
   // Initialize the application when DOM is fully loaded
   document.addEventListener('DOMContentLoaded', init);
 })();
+
+// كود شاشة الانتظار
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+    }, 2000);
+  }
+});
