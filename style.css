@@ -471,8 +471,8 @@ body.dark-theme .story-section blockquote {
 }
 
 .load-logo {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
 }
 
 @media (min-width: 768px) {
