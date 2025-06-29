@@ -475,6 +475,141 @@ body.dark-theme .story-section blockquote {
   height: 300px;
 }
 
+/* مؤشر حالة الاتصال */
+#offline-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* تحسين الإشعارات */
+.notification {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1001;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.success {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border-left: 4px solid #2e7d32;
+}
+
+.notification.error {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+  border-left: 4px solid #c62828;
+}
+
+/* تحسين زر التحديث */
+.update-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(-50%) translateY(100%);
+  transition: all 0.3s ease;
+}
+
+.update-banner.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.update-banner:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+}
+
+/* تحسينات الواجهة للوضع المتصل/غير متصل */
+body.offline {
+  filter: grayscale(10%);
+}
+
+body.offline .container {
+  opacity: 0.95;
+}
+
+/* رسالة للمستخدمين الذين لا يدعمون Service Worker */
+.no-sw-support {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: #ff9800;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+/* تحسينات للثيم الداكن */
+body.dark-theme #offline-indicator {
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .notification {
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* أيقونة التحميل للملفات المخزنة مؤقتاً */
+.cached-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: #4CAF50;
+  border-radius: 50%;
+  margin-left: 8px;
+  position: relative;
+}
+
+.cached-icon::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
 @media (min-width: 768px) {
   .main-content {
     flex-direction: row;
