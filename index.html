@@ -207,11 +207,135 @@ document.querySelectorAll('.svg-img').forEach(img =&gt; {
 
   <script src="script.js"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log("✅ Service Worker Registered"))
-        .catch(error => console.error("Service Worker Error:", error));
+// كود تسجيل Service Worker المحسن - يوضع في نهاية ملف HTML
+(function() {
+  // التحقق من دعم Service Worker
+  if ('serviceWorker' in navigator) {
+    console.log('Service Worker: Supported');
+    
+    // تسجيل Service Worker
+    navigator.serviceWorker.register('./service-worker.js', {
+      scope: './' // تحديد نطاق العمل
+    })
+    .then(registration => {
+      console.log('✅ Service Worker: Registered successfully', registration);
+      
+      // التحقق من وجود تحديث
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        console.log('Service Worker: New version found');
+        
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            console.log('Service Worker: New version ready');
+            
+            // يمكن إظهار رسالة للمستخدم هنا للتحديث
+            showNotification('تحديث جديد متاح، سيتم التحديث تلقائياً', 'success');
+            
+            // تحديث تلقائي
+            setTimeout(() => {
+              newWorker.postMessage({ type: 'SKIP_WAITING' });
+            }, 2000);
+          }
+        });
+      });
+      
+      // التحقق من حالة التخزين المؤقت
+      checkCacheStatus();
+    })
+    .catch(error => {
+      console.error('❌ Service Worker: Registration failed', error);
+    });
+    
+    // الاستماع لتغييرات Controller
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      console.log('Service Worker: Controller changed, reloading...');
+      window.location.reload();
+    });
+    
+  } else {
+    console.warn('Service Worker: Not supported in this browser');
+  }
+  
+  // وظيفة للتحقق من حالة التخزين المؤقت
+  function checkCacheStatus() {
+    if (navigator.serviceWorker.controller) {
+      const messageChannel = new MessageChannel();
+      
+      messageChannel.port1.onmessage = function(event) {
+        if (event.data.type === 'CACHE_STATUS') {
+          console.log(`Service Worker: Cached ${event.data.cached}/${event.data.total} files`);
+          
+          // إظهار رسالة عن حالة التخزين
+          if (event.data.cached >= event.data.total) {
+            console.log('✅ Service Worker: All files cached - App ready for offline use');
+            
+            // إضافة مؤشر بصري للحالة المتصلة/غير متصلة
+            updateOfflineIndicator(true);
+          }
+        }
+      };
+      
+      navigator.serviceWorker.controller.postMessage(
+        { type: 'GET_CACHE_STATUS' }, 
+        [messageChannel.port2]
+      );
     }
+  }
+  
+  // مراقبة حالة الاتصال
+  function updateOfflineIndicator(forceOnline = false) {
+    // إنشاء مؤشر الحالة إذا لم يكن موجوداً
+    let indicator = document.getElementById('offline-indicator');
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'offline-indicator';
+      indicator.style.cssText = `
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      `;
+      document.body.appendChild(indicator);
+    }
+    
+    const isOnline = navigator.onLine || forceOnline;
+    
+    if (isOnline) {
+      indicator.textContent = '🟢 متصل';
+      indicator.style.backgroundColor = '#4CAF50';
+      indicator.style.color = 'white';
+    } else {
+      indicator.textContent = '🔴 غير متصل';
+      indicator.style.backgroundColor = '#f44336';
+      indicator.style.color = 'white';
+    }
+  }
+  
+  // مراقبة تغييرات الاتصال
+  window.addEventListener('online', () => {
+    console.log('Network: Online');
+    updateOfflineIndicator();
+    showNotification('تم استعادة الاتصال بالإنترنت', 'success');
+  });
+  
+  window.addEventListener('offline', () => {
+    console.log('Network: Offline');
+    updateOfflineIndicator();
+    showNotification('يعمل التطبيق الآن في وضع عدم الاتصال', 'success');
+  });
+  
+  // تشغيل المؤشر عند التحميل
+  window.addEventListener('load', () => {
+    updateOfflineIndicator();
+  });
+  
+})();
   </script>
 </body>
 </html>
