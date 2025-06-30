@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 26">
-  <defs>
-    <linearGradient gradientUnits="userSpaceOnUse" x1="210" y1="8" x2="210" y2="18" id="gradient-0" gradientTransform="matrix(-0.001741, -0.999998, 39.245013, -0.068376, -302.312516, 223.532422)">
-      <stop offset="0" style="stop-color: rgb(0, 73, 106);"/>
-      <stop offset="1" style="stop-color: rgb(0, 144, 215);"/>
-    </linearGradient>
-  </defs>
-  <rect style="fill: none; stroke: rgba(0, 0, 0, 0.5);" x="5" y="5" width="410" height="16" rx="3" ry="3"/>
-  <rect style="transform-box: fill-box; transform-origin: left center; fill: url(&quot;#gradient-0&quot;);" x="8" y="8" width="404" height="10" rx="2" ry="2">
-    <animateTransform type="scale" additive="sum" attributeName="transform" values="0.05 1;1 1" begin="0s" dur="1.8s" fill="freeze" keyTimes="0; 1" calcMode="spline" keySplines="0.7 0 0.3 1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 12">
+  <rect x="2" y="3" width="300" height="6" style="stroke: rgba(0, 0, 0, 0.5);" fill="#e0e0e0" rx="1.7" ry="1.7"/>
+  <rect height="6" fill="#007aff" rx="1.7" ry="1.7" style="stroke-width: 1;" x="2" y="3">
+    <animate attributeName="width" dur="1.8s" repeatCount="1" fill="freeze" values="10;300" keyTimes="0; 1" calcMode="spline" keySplines="0.7 0 1 1"/>
+    <animate attributeName="fill" values="rgb(0% 70% 100%);rgb(0% 47.843% 100%)" begin="0s" dur="1.8s" fill="freeze" calcMode="spline" keyTimes="0; 1" keySplines="0.7 0 1 1"/>
   </rect>
 </svg>
