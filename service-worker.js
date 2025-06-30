@@ -1,149 +1,149 @@
 const CACHE_NAME = 'svg-uri-cache-v2';
+const STATIC_CACHE = 'svg-uri-static-v2';
+const DYNAMIC_CACHE = 'svg-uri-dynamic-v2';
+
+// Files to cache for offline use
 const urlsToCache = [
-  // الصفحات الأساسية
-  '/',
-  '/index.html',
+  './',
   './index.html',
-  
-  // ملفات CSS و JS
-  '/style.css',
   './style.css',
-  '/script.js',
   './script.js',
-  
-  // الصور والأيقونات
-  '/favicon.png',
+  './manifest.json',
   './favicon.png',
-  '/favicon-512.png',
   './favicon-512.png',
-  '/W-LOGO.svg',
   './W-LOGO.svg',
-  '/load.svg',
-  './load.svg',
-  '/preview-img.jpg',
-  './preview-img.jpg',
-  '/preview.png',
-  './preview.png',
-  
-  // الملفات الإضافية
-  '/manifest.json',
-  './manifest.json'
+  './load.svg'
 ];
 
-// تثبيت Service Worker وتخزين الملفات
+// Install event - cache static assets
 self.addEventListener('install', event => {
   console.log('Service Worker: Installing...');
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(STATIC_CACHE)
       .then(cache => {
-        console.log('Service Worker: Caching files');
+        console.log('Service Worker: Caching static files');
         return cache.addAll(urlsToCache);
       })
       .then(() => {
-        console.log('Service Worker: All files cached successfully');
-        // إجبار التفعيل الفوري للـ Service Worker الجديد
+        console.log('Service Worker: Skip waiting');
         return self.skipWaiting();
       })
-      .catch(error => {
-        console.error('Service Worker: Failed to cache files:', error);
+      .catch(err => {
+        console.error('Service Worker: Cache failed', err);
       })
   );
 });
 
-// تفعيل Service Worker والتحكم في الصفحات
+// Activate event - clean up old caches
 self.addEventListener('activate', event => {
   console.log('Service Worker: Activating...');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          // حذف الـ cache القديم
-          if (cacheName !== CACHE_NAME) {
-            console.log('Service Worker: Deleting old cache:', cacheName);
+          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+            console.log('Service Worker: Deleting old cache', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     }).then(() => {
-      console.log('Service Worker: Activated successfully');
-      // السيطرة على جميع الصفحات فوراً
+      console.log('Service Worker: Claiming clients');
       return self.clients.claim();
     })
   );
 });
 
-// اعتراض طلبات الشبكة
+// Fetch event - serve cached content when offline
 self.addEventListener('fetch', event => {
-  console.log('Service Worker: Fetching:', event.request.url);
-  
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // Skip chrome-extension and other non-http requests
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        // إذا وُجد الملف في الـ cache، أرجعه
-        if (response) {
-          console.log('Service Worker: Found in cache:', event.request.url);
-          return response;
+      .then(cachedResponse => {
+        // Return cached version if available
+        if (cachedResponse) {
+          console.log('Service Worker: Serving from cache', event.request.url);
+          return cachedResponse;
         }
-        
-        // إذا لم يوجد في الـ cache، جرب تحميله من الشبكة
-        console.log('Service Worker: Fetching from network:', event.request.url);
+
+        // Otherwise fetch from network
         return fetch(event.request)
           .then(response => {
-            // تأكد من أن الاستجابة صالحة
+            // Check if response is valid
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
-            
-            // انسخ الاستجابة لأنها قابلة للقراءة مرة واحدة فقط
+
+            // Clone the response for caching
             const responseToCache = response.clone();
-            
-            // أضف الاستجابة إلى الـ cache
-            caches.open(CACHE_NAME)
+
+            // Cache dynamic content
+            caches.open(DYNAMIC_CACHE)
               .then(cache => {
                 cache.put(event.request, responseToCache);
               });
-            
+
             return response;
           })
           .catch(error => {
-            console.error('Service Worker: Network fetch failed:', error);
+            console.log('Service Worker: Fetch failed, serving offline page', error);
             
-            // إذا فشل التحميل من الشبكة، أرجع صفحة خطأ مخصصة
+            // Return offline fallback for HTML pages
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              return caches.match('./index.html');
             }
             
-            // للملفات الأخرى، أرجع استجابة خطأ
-            return new Response('Network error happened', {
-              status: 408,
-              headers: { 'Content-Type': 'text/plain' }
+            // Return empty response for other resources
+            return new Response('Offline', {
+              status: 503,
+              statusText: 'Service Unavailable'
             });
           });
       })
   );
 });
 
-// معالجة رسائل من الصفحة الرئيسية
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-  
-  if (event.data && event.data.type === 'GET_CACHE_STATUS') {
-    caches.open(CACHE_NAME).then(cache => {
-      cache.keys().then(keys => {
-        event.ports[0].postMessage({
-          type: 'CACHE_STATUS',
-          cached: keys.length,
-          total: urlsToCache.length
-        });
-      });
-    });
+// Background sync for future enhancements
+self.addEventListener('sync', event => {
+  if (event.tag === 'background-sync') {
+    console.log('Service Worker: Background sync');
+    event.waitUntil(
+      // Add background sync logic here if needed
+      Promise.resolve()
+    );
   }
 });
 
-// معالجة تحديثات الـ Service Worker
-self.addEventListener('controllerchange', () => {
-  console.log('Service Worker: Controller changed');
-  window.location.reload();
+// Push notifications handler (for future use)
+self.addEventListener('push', event => {
+  if (event.data) {
+    const data = event.data.json();
+    console.log('Service Worker: Push received', data);
+    
+    event.waitUntil(
+      self.registration.showNotification(data.title, {
+        body: data.body,
+        icon: './favicon-512.png',
+        badge: './favicon.png'
+      })
+    );
+  }
+});
+
+// Handle notification clicks
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  
+  event.waitUntil(
+    clients.openWindow('./')
+  );
 });
