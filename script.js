@@ -82,7 +82,7 @@
   function createInstallButton() {
     installButton = document.createElement('button');
     installButton.id = 'install-btn';
-    installButton.innerHTML = '📱 Install App';
+    installButton.innerHTML = '📱 INSTALL APP';
     installButton.style.cssText = `
       position: fixed;
       bottom: 20px;
@@ -122,12 +122,12 @@
     if (!alreadyPrompted && installButton) {
       installButton.style.display = 'block';
       
-      // Auto-hide after 10 seconds
+      // Auto-hide after 30 seconds
       setTimeout(() => {
         if (installButton.style.display === 'block') {
           hideInstallButton();
         }
-      }, 10000);
+      }, 30000);
     }
   }
 
