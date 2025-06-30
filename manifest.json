@@ -1,20 +1,62 @@
 {
-  "name": "SVG to Data URI",
+  "name": "SVG to Data URI Converter",
   "short_name": "SVG URI",
-  "start_url": "index.html",
+  "description": "Convert SVG code to Data URI format for offline use",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#EAF2FA",
   "theme_color": "#101B39",
-  "icons": [
+  "orientation": "any",
+  "scope": "./",
+  "lang": "en-US",
+  "categories": ["developer", "utilities", "productivity"],
+  "screenshots": [
     {
       "src": "favicon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
-    },
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
     {
       "src": "favicon.png",
       "sizes": "180x180",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Convert SVG",
+      "short_name": "Convert",
+      "description": "Start converting SVG to Data URI",
+      "url": "./?action=convert",
+      "icons": [
+        {
+          "src": "favicon.png",
+          "sizes": "180x180"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "svg_file",
+          "accept": [".svg", "image/svg+xml"]
+        }
+      ]
+    }
+  }
 }
