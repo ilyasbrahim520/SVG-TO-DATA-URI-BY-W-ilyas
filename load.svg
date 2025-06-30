@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 12">
-  <rect x="2" y="3" width="300" height="6" style="stroke: rgba(0, 0, 0, 0.5);" fill="#e0e0e0" rx="1.7" ry="1.7"/>
-  <rect height="6" fill="#007aff" rx="1.7" ry="1.7" style="stroke-width: 1;" x="2" y="3">
-    <animate attributeName="width" dur="1.8s" repeatCount="1" fill="freeze" values="10;300" keyTimes="0; 1" calcMode="spline" keySplines="0.7 0 1 1"/>
-    <animate attributeName="fill" values="rgb(0% 70% 100%);rgb(0% 47.843% 100%)" begin="0s" dur="1.8s" fill="freeze" calcMode="spline" keyTimes="0; 1" keySplines="0.7 0 1 1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 12">
+  <rect x="5" y="3" width="410" height="6" style="stroke: rgba(0, 0, 0, 0.5);" fill="#e0e0e0" rx="1.7" ry="1.7"/>
+  <rect height="6" fill="#007aff" rx="1.7" ry="1.7" style="stroke-width: 1;" x="5" y="3">
+    <animate attributeName="width" dur="1.8s" repeatCount="1" fill="freeze" values="10;410" keyTimes="0; 1" calcMode="spline" keySplines="0.7 0 0.3 1"/>
+    <animate attributeName="fill" values="rgb(0% 70% 100%);rgb(0% 47.843% 100%)" begin="0s" dur="1.8s" fill="freeze" calcMode="spline" keyTimes="0; 1" keySplines="0.7 0 0.3 1"/>
   </rect>
 </svg>
