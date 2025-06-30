@@ -216,12 +216,6 @@ document.querySelectorAll('.svg-img').forEach(img =&gt; {
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log("✅ Service Worker Registered"))
-        .catch(error => console.error("Service Worker Error:", error));
-    }
-  </script>
+
 </body>
 </html>
