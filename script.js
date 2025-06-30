@@ -1,8 +1,12 @@
 /**
  * SVG to Data URI Converter
- * Enhanced script with improved organization, features and error handling
+ * Enhanced script with PWA features and offline support
  */
 (function() {
+  // PWA Installation variables
+  let deferredPrompt;
+  let installButton;
+
   // DOM Elements
   const elements = {
     svgFileInput: document.getElementById('svg-file'),
@@ -20,12 +24,13 @@
 
   // Settings - can be extended for preferences
   const settings = {
-    minify: true,                  // Minify SVG by default
+    minify: true,
     storage: {
-      theme: 'dark-theme',         // Storage key for theme preference
-      history: 'svg-conversion-history'  // Storage key for conversion history
+      theme: 'dark-theme',
+      history: 'svg-conversion-history',
+      installPrompted: 'pwa-install-prompted'
     },
-    notificationTimeout: 3000      // Notification display duration
+    notificationTimeout: 3000
   };
 
   // Track conversion history
@@ -37,6 +42,153 @@
     loadSavedTheme();
     loadExampleSVG();
     loadConversionHistory();
+    initializePWA();
+    checkOnlineStatus();
+  }
+
+  /**
+   * Initialize PWA features
+   */
+  function initializePWA() {
+    // Create install button
+    createInstallButton();
+    
+    // Listen for beforeinstallprompt event
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('PWA: Install prompt available');
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallButton();
+    });
+
+    // Listen for app installed event
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('PWA: App installed successfully');
+      hideInstallButton();
+      showNotification('App installed successfully!', 'success');
+      localStorage.setItem(settings.storage.installPrompted, 'true');
+    });
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      console.log('PWA: Running in standalone mode');
+      hideInstallButton();
+    }
+  }
+
+  /**
+   * Create install button
+   */
+  function createInstallButton() {
+    installButton = document.createElement('button');
+    installButton.id = 'install-btn';
+    installButton.innerHTML = '📱 Install App';
+    installButton.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: linear-gradient(45deg, #2ECC48, #27ae60);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(46, 204, 72, 0.3);
+      display: none;
+      transition: all 0.3s ease;
+    `;
+    
+    installButton.addEventListener('mouseover', () => {
+      installButton.style.transform = 'translateY(-2px)';
+      installButton.style.boxShadow = '0 6px 20px rgba(46, 204, 72, 0.4)';
+    });
+    
+    installButton.addEventListener('mouseout', () => {
+      installButton.style.transform = 'translateY(0)';
+      installButton.style.boxShadow = '0 4px 15px rgba(46, 204, 72, 0.3)';
+    });
+
+    installButton.addEventListener('click', installApp);
+    document.body.appendChild(installButton);
+  }
+
+  /**
+   * Show install button
+   */
+  function showInstallButton() {
+    const alreadyPrompted = localStorage.getItem(settings.storage.installPrompted);
+    if (!alreadyPrompted && installButton) {
+      installButton.style.display = 'block';
+      
+      // Auto-hide after 10 seconds
+      setTimeout(() => {
+        if (installButton.style.display === 'block') {
+          hideInstallButton();
+        }
+      }, 10000);
+    }
+  }
+
+  /**
+   * Hide install button
+   */
+  function hideInstallButton() {
+    if (installButton) {
+      installButton.style.display = 'none';
+    }
+  }
+
+  /**
+   * Install the PWA
+   */
+  async function installApp() {
+    if (!deferredPrompt) {
+      showNotification('Install not available', 'error');
+      return;
+    }
+
+    try {
+      const result = await deferredPrompt.prompt();
+      console.log('PWA: Install prompt result:', result.outcome);
+      
+      if (result.outcome === 'accepted') {
+        showNotification('Installing app...', 'success');
+      } else {
+        showNotification('Installation cancelled', 'error');
+      }
+      
+      deferredPrompt = null;
+      hideInstallButton();
+      localStorage.setItem(settings.storage.installPrompted, 'true');
+    } catch (error) {
+      console.error('PWA: Install error:', error);
+      showNotification('Installation failed', 'error');
+    }
+  }
+
+  /**
+   * Check online/offline status
+   */
+  function checkOnlineStatus() {
+    const updateOnlineStatus = () => {
+      if (navigator.onLine) {
+        showNotification('Back online!', 'success');
+      } else {
+        showNotification('Working offline', 'error');
+      }
+    };
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // Initial check
+    if (!navigator.onLine) {
+      setTimeout(() => {
+        showNotification('App ready for offline use', 'success');
+      }, 1000);
+    }
   }
 
   /**
@@ -54,11 +206,36 @@
     
     // Theme toggle
     elements.themeToggle.addEventListener('change', toggleTheme);
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', handleKeyboardShortcuts);
+  }
+
+  /**
+   * Handle keyboard shortcuts
+   */
+  function handleKeyboardShortcuts(e) {
+    // Ctrl/Cmd + Enter to convert
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      handleConversion();
+    }
+    
+    // Ctrl/Cmd + L to clear
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+      e.preventDefault();
+      clearAll();
+    }
+    
+    // Ctrl/Cmd + C to copy (when output is focused)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'c' && document.activeElement === elements.outputCode) {
+      e.preventDefault();
+      copyToClipboard();
+    }
   }
 
   /**
    * Handle file upload and processing
-   * @param {Event} e - The change event from file input
    */
   async function handleFileUpload(e) {
     const file = e.target.files[0];
@@ -71,7 +248,6 @@
     elements.fileNameDisplay.textContent = file.name;
     
     try {
-      // Read the file asynchronously
       const svgContent = await readFileAsync(file);
       elements.svgInput.value = svgContent;
       updatePreview(svgContent);
@@ -82,8 +258,6 @@
 
   /**
    * Read a file asynchronously using a Promise
-   * @param {File} file - The file to read
-   * @returns {Promise<string>} - The file contents
    */
   function readFileAsync(file) {
     return new Promise((resolve, reject) => {
@@ -108,20 +282,13 @@
     }
     
     try {
-      // Validate SVG code
       validateSVG(svgCode);
-      
-      // Convert to Data URI
       const dataUri = svgToDataUri(svgCode);
       
-      // Update UI with results
       elements.outputCode.textContent = dataUri;
       updatePreview(svgCode);
-      
-      // Save to history
       saveToHistory(svgCode, dataUri);
       
-      // Show file size
       const byteSize = new Blob([dataUri]).size;
       const readableSize = formatBytes(byteSize);
       
@@ -133,8 +300,6 @@
 
   /**
    * Validate SVG using DOM parser
-   * @param {string} svg - SVG string to validate
-   * @throws {Error} - If SVG is invalid
    */
   function validateSVG(svg) {
     const parser = new DOMParser();
@@ -145,52 +310,42 @@
       throw new Error('Invalid SVG code');
     }
     
-    // Additional validation can be added here
     if (!svg.includes('<svg')) {
       throw new Error('Missing SVG tag');
     }
   }
 
   /**
-   * Convert SVG to Data URI with options for minification
-   * @param {string} svg - The SVG code to convert
-   * @returns {string} - Data URI string
+   * Convert SVG to Data URI with minification
    */
   function svgToDataUri(svg) {
-    // Minify SVG if option is enabled
     let processedSvg = svg;
     
     if (settings.minify) {
       processedSvg = minifySvg(svg);
     }
     
-    // URL encode the SVG
     const encoded = encodeURIComponent(processedSvg)
       .replace(/'/g, '%27')
       .replace(/"/g, '%22');
     
-    // Create the data URI
     return `data:image/svg+xml;charset=utf-8,${encoded}`;
   }
 
   /**
    * Minify SVG by removing extra spaces, comments, and newlines
-   * @param {string} svg - The SVG code to minify
-   * @returns {string} - Minified SVG
    */
   function minifySvg(svg) {
     return svg
-      .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
-      .replace(/>\s+</g, '><')         // Remove whitespace between tags
-      .replace(/\s{2,}/g, ' ')         // Replace multiple spaces with single space
-      .replace(/[\r\n]/g, '')          // Remove newlines
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/>\s+</g, '><')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/[\r\n]/g, '')
       .trim();
   }
 
   /**
    * Format bytes to human-readable format
-   * @param {number} bytes - Number of bytes
-   * @returns {string} - Formatted string (e.g., "1.23 KB")
    */
   function formatBytes(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -204,7 +359,6 @@
 
   /**
    * Update SVG preview
-   * @param {string} svgCode - SVG code to preview
    */
   function updatePreview(svgCode) {
     if (!svgCode) {
@@ -213,10 +367,8 @@
     }
     
     try {
-      // Create data URI for preview
       const dataUri = svgToDataUri(svgCode);
       
-      // Display the image
       elements.svgPreview.innerHTML = '';
       const img = document.createElement('img');
       img.src = dataUri;
@@ -229,41 +381,43 @@
 
   /**
    * Save conversion to history
-   * @param {string} svg - Original SVG
-   * @param {string} dataUri - Generated Data URI
    */
   function saveToHistory(svg, dataUri) {
-    // Prepare history entry with timestamp
     const entry = {
       timestamp: new Date().toISOString(),
-      svg: svg.length > 100 ? svg.substring(0, 100) + '...' : svg, // Store a preview for large SVGs
+      svg: svg.length > 100 ? svg.substring(0, 100) + '...' : svg,
       dataUri: dataUri,
       size: new Blob([dataUri]).size
     };
     
-    // Add to history array
-    conversionHistory.unshift(entry); // Add to beginning
+    conversionHistory.unshift(entry);
     
-    // Limit history to 10 items
     if (conversionHistory.length > 10) {
       conversionHistory.pop();
     }
     
-    // Save to localStorage
-    localStorage.setItem(settings.storage.history, JSON.stringify(conversionHistory));
+    // Store offline using localStorage
+    try {
+      localStorage.setItem(settings.storage.history, JSON.stringify(conversionHistory));
+    } catch (e) {
+      console.warn('LocalStorage quota exceeded, clearing old history');
+      conversionHistory = conversionHistory.slice(0, 5);
+      localStorage.setItem(settings.storage.history, JSON.stringify(conversionHistory));
+    }
   }
 
   /**
    * Load conversion history from localStorage
    */
   function loadConversionHistory() {
-    const saved = localStorage.getItem(settings.storage.history);
-    if (saved) {
-      try {
+    try {
+      const saved = localStorage.getItem(settings.storage.history);
+      if (saved) {
         conversionHistory = JSON.parse(saved);
-      } catch (e) {
-        conversionHistory = [];
       }
+    } catch (e) {
+      console.warn('Error loading history:', e);
+      conversionHistory = [];
     }
   }
 
@@ -295,7 +449,14 @@
       await navigator.clipboard.writeText(output);
       showNotification('Data URI copied to clipboard', 'success');
     } catch (err) {
-      showNotification('Failed to copy text: ' + err, 'error');
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = output;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      showNotification('Data URI copied to clipboard', 'success');
     }
   }
 
@@ -316,7 +477,7 @@
       const a = document.createElement('a');
       
       a.href = url;
-      a.download = 'svg-data-uri.txt';
+      a.download = `svg-data-uri-${Date.now()}.txt`;
       document.body.appendChild(a);
       a.click();
       
@@ -336,18 +497,26 @@
    */
   function toggleTheme() {
     document.body.classList.toggle('dark-theme');
-    localStorage.setItem(settings.storage.theme, elements.themeToggle.checked);
+    try {
+      localStorage.setItem(settings.storage.theme, elements.themeToggle.checked);
+    } catch (e) {
+      console.warn('Could not save theme preference:', e);
+    }
   }
 
   /**
    * Load saved theme preference
    */
   function loadSavedTheme() {
-    const darkTheme = localStorage.getItem(settings.storage.theme) === 'true';
-    elements.themeToggle.checked = darkTheme;
-    
-    if (darkTheme) {
-      document.body.classList.add('dark-theme');
+    try {
+      const darkTheme = localStorage.getItem(settings.storage.theme) === 'true';
+      elements.themeToggle.checked = darkTheme;
+      
+      if (darkTheme) {
+        document.body.classList.add('dark-theme');
+      }
+    } catch (e) {
+      console.warn('Could not load theme preference:', e);
     }
   }
 
@@ -363,8 +532,6 @@
 
   /**
    * Show notification
-   * @param {string} message - Notification message
-   * @param {string} type - Notification type ('success' or 'error')
    */
   function showNotification(message, type) {
     elements.notification.textContent = message;
@@ -376,11 +543,35 @@
     }, settings.notificationTimeout);
   }
 
-  // Initialize the application when DOM is fully loaded
+  // Initialize when DOM is ready
   document.addEventListener('DOMContentLoaded', init);
+
+  // Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(registration => {
+          console.log('SW registered: ', registration);
+          
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                showNotification('App updated! Refresh to see changes.', 'success');
+              }
+            });
+          });
+        })
+        .catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
+
 })();
 
-// كود شاشة الانتظار
+// Preloader handling
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
   if (preloader) {
